@@ -73,50 +73,32 @@ def make_text(chains):
         return make_text(chains)
 
 
-def tweet(chains):
-    # Use Python os.environ to get at environmental variables
-    # Note: you must run `source secrets.sh` before running this file
-    # to make sure these environmental variables are set.
-    return tweet_string
-
-    # continue_tweeting = raw_input("Enter to tweet again [q to quit]: ")
-    # if continue_tweeting == "":
-    #     print "You pressed enter"
-    #     # filenames = sys.argv[1:]
-    #     # text = open_and_read_file(filenames)
-    #     # chains = make_chains(text)
-    #     # tweet_string = make_text(chains)
-    #     # variable = tweet(tweet_string)
-    #     return tweet_string
-    # elif continue_tweeting == 'q':
-    #     return
-    # else:
-    #     print "Not a valid input."
-    #     return variable
-
-# def call_all_functions():
-#     filenames = sys.argv[1:]
-#     text = open_and_read_file(filenames)
-#     chains = make_chains(text)
-#     tweet_string = make_text(chains)
-#     tweet(tweet_string)
+def tweet_interface(chains):
+    while True:
+        continue_tweeting = raw_input("Press enter to tweet [q to quit]: ")
+        if continue_tweeting == "":
+            tweet_string = make_text(chains)
+            status = api.PostUpdate(tweet_string)
+            print "Just tweeted: ", status.text
+        elif continue_tweeting == "q":
+            break
+        else:
+            print "Not a valid input."
+            
 
 
 # Get the filenames from the user through a command line prompt, ex:
 # python markov.py green-eggs.txt shakespeare.txt
-# filenames = sys.argv[1:]
+filenames = sys.argv[1:]
 
 # Open the files and turn them into one long string
-text = open_and_read_file('queen-lyrics.txt')
+text = open_and_read_file(filenames)
 
-# Get a Markov chain
+# Get a Markov chain as a dictionary
 chains = make_chains(text)
 
-# Your task is to write a new function tweet, that will take chains as input
-tweet_string = make_text(chains)
+# Write a new function tweet, that will take chains (dictionary) as input and returns a tweet string
+
 
 # tweet(chains)
-tweet_to_post = tweet(tweet_string)
-
-status = api.PostUpdate(tweet_to_post)
-print status.text
+tweet_interface(chains)
