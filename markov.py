@@ -79,6 +79,9 @@ def tweet_interface(chains):
         if continue_tweeting == "":
             tweet_string = make_text(chains)
             status = api.PostUpdate(tweet_string)
+            all_tweets = api.GetUserTimeline(screen_name='markovtweetbot1')
+            group_of_all_tweets = [s.text for s in all_tweets]
+            print "The last tweet was: ", group_of_all_tweets[1]
             print "Just tweeted: ", status.text
         elif continue_tweeting == "q":
             break
